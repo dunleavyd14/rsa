@@ -53,8 +53,11 @@ def miller_rabin(n : int, k : int) -> bool:
 		return False
 	
 	
+	for _ in range(k):
+		if not test(d, n):
+			return False
 	
-	return all([test(d, n) for _ in range(k)])
+	return True
 
 
 def get_prime(limit : int) -> int:
@@ -163,30 +166,31 @@ if __name__ == "__main__":
 
 	if len(sys.argv) == 1:
 		print(
-				"Usage:	keygen key_name"
-				"		encrypt message key_name output_filename"
-				"		decrypt msg_filename key_name"
+				"Usage: keygen key_name \n"
+				"       encrypt message key_name output_filename \n"
+				"       decrypt msg_filename key_name \n"
 			)
+	else:
 	
-	command = sys.argv[1]
-	if command == "test":
-		pub, priv = rsa_keygen()
-		record_keys(pub, priv, "test")
-		encrypt("hello".encode(), "test", "test_enc")
-		decrypt("test_enc", "test")
+		command = sys.argv[1]
+		if command == "test":
+			pub, priv = rsa_keygen()
+			record_keys(pub, priv, "test")
+			encrypt("hello".encode(), "test", "test_enc")
+			decrypt("test_enc", "test")
 
-	elif command == "keygen":
-		fname = sys.argv[2]
-		pub, priv = rsa_keygen()
-		record_keys(pub, priv, fname)
-	
-	elif command == "encrypt":
-		msg, key, output_fname = sys.argv[2].encode(), sys.argv[3], sys.argv[4]
-		encrypt(msg, key, output_fname)
-	
-	elif command == "decrypt":
-		msg_fname, key = sys.argv[2], sys.argv[3]
-		decrypt(msg_fname, key)
+		elif command == "keygen":
+			fname = sys.argv[2]
+			pub, priv = rsa_keygen()
+			record_keys(pub, priv, fname)
+		
+		elif command == "encrypt":
+			msg, key, output_fname = sys.argv[2].encode(), sys.argv[3], sys.argv[4]
+			encrypt(msg, key, output_fname)
+		
+		elif command == "decrypt":
+			msg_fname, key = sys.argv[2], sys.argv[3]
+			decrypt(msg_fname, key)
 
 
 
